@@ -3,7 +3,8 @@ import polars as pl
 from dinobots.data_structures.PolarGraph import PolarGraph
 
 
-def smiles_to_atom_graph(smiles):
+def SmilesToPolarGraph(smiles):
+    """Convert SMILES string to PolarGraph"""
     mol = Chem.MolFromSmiles(smiles)
     vertices = [
         dict(
@@ -31,7 +32,8 @@ def smiles_to_atom_graph(smiles):
     return pg
 
 
-def nx_to_mol(G):
+def NetworkXToMol(G):
+    """Convert NetworkX Graph generated from PolarGraph back to RDKit Mol"""
     import networkx as nx
     from rdkit.Chem.rdchem import ChiralType, HybridizationType, BondType
 
@@ -59,8 +61,7 @@ def nx_to_mol(G):
         idx = mol.AddAtom(a)
         node_to_idx[node] = idx
     bond_types = {
-        k: BondType.names[x] for k, x in nx.get_edge_attributes(G,
-                                                                "bond_type").items()
+        k: BondType.names[x] for k, x in nx.get_edge_attributes(G, "bond_type").items()
     }
     for edge in G.edges():
         first, second = edge
