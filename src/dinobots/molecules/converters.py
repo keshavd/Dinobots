@@ -1,6 +1,6 @@
 from rdkit import Chem
 import polars as pl
-from src.data_structures.PolarGraph import PolarGraph
+from dinobots.data_structures.PolarGraph import PolarGraph
 
 
 def smiles_to_atom_graph(smiles):
