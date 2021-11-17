@@ -73,7 +73,7 @@ class PolarGraph:
             G.add_edge(**dict(zip(edge_cols, edge)))
         return G
 
-    def to_gf(self):
+    def to_gf(self, spark):
         """Convert PolarFrame to PySpark's GraphFrame
 
         Only usable in PySpark Environment
