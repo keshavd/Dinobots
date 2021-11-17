@@ -28,6 +28,14 @@ class AtomGraphTesting(unittest.TestCase):
         mol = NetworkXToMol(mcs.subgraph)
         self.assertEqual(Chem.MolToSmiles(mol), "Cn1c(=O)[nH]c2ncn(C)c2c1=O")
 
+    def test_edit_distance(self):
+        caffeine = SmilesToPolarGraph(caffeine_smiles)
+        paraxanthine = SmilesToPolarGraph(paraxanthine_smiles)
+        dist = nx.algorithms.similarity.graph_edit_distance(
+            caffeine.to_nx(), paraxanthine.to_nx()
+        )
+        self.assertEqual(dist, 2)
+
 
 if __name__ == "__main__":
     unittest.main()
