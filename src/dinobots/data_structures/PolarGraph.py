@@ -1,6 +1,4 @@
 import polars as pl
-import networkx as nx
-
 
 class PolarGraph:
     """
@@ -63,6 +61,7 @@ class PolarGraph:
 
     def to_nx(self):
         """Convert to NetworkX Graph Object"""
+        import networkx as nx
         G = nx.Graph()
         vertex_cols = self.vertices.rename({self.ID: "node_for_adding"}).columns
         for row in self.vertices.rows():
