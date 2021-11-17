@@ -11,3 +11,7 @@ It can generate a networkX graph and GraphFrame (within a spark session).
 
 Convert SMILES to PolarGraphs. You can use NetworkX to perform maximum common subgraph searches from PolarGraph generated nx.Graph objects.
 You can also readily convert subgraphs back to SMILES.
+
+## BEAR
+
+(in progress)
