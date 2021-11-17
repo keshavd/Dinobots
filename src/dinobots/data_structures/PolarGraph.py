@@ -18,7 +18,7 @@ class PolarGraph:
         self._vertices = v
         self._edges = e
 
-        self.ID = "ids"
+        self.ID = "id"
         self.SRC = "src"
         self.DST = "dst"
 

@@ -7,7 +7,7 @@ def smiles_to_atom_graph(smiles):
     mol = Chem.MolFromSmiles(smiles)
     vertices = [
         dict(
-            ids=atom.GetIdx(),
+            id=atom.GetIdx(),
             atomic_num=atom.GetAtomicNum(),
             formal_charge=atom.GetFormalCharge(),
             chiral_tag=atom.GetChiralTag().name,
