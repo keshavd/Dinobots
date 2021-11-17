@@ -37,12 +37,16 @@ def nx_to_mol(G):
 
     mol = Chem.RWMol()
     atomic_nums = nx.get_node_attributes(G, "atomic_num")
-    chiral_tags = ChiralType.names[nx.get_node_attributes(G, "chiral_tag")]
+    chiral_tags = {
+        k: ChiralType.names[x]
+        for k, x in nx.get_node_attributes(G, "chiral_tag").items()
+    }
     formal_charges = nx.get_node_attributes(G, "formal_charge")
     node_is_aromatics = nx.get_node_attributes(G, "is_aromatic")
-    node_hybridizations = HybridizationType.names[
-        nx.get_node_attributes(G, "hybridization")
-    ]
+    node_hybridizations = {
+        k: HybridizationType.names[x]
+        for k, x in nx.get_node_attributes(G, "hybridization").items()
+    }
     num_explicit_hss = nx.get_node_attributes(G, "num_explicit_hs")
     node_to_idx = {}
     for node in G.nodes():
@@ -54,12 +58,14 @@ def nx_to_mol(G):
         a.SetNumExplicitHs(num_explicit_hss[node])
         idx = mol.AddAtom(a)
         node_to_idx[node] = idx
-    bond_types = nx.get_edge_attributes(G, "bond_type")
+    bond_types = {
+        k: BondType.names[x] for k, x in nx.get_edge_attributes(G, "bond_type").items
+    }
     for edge in G.edges():
         first, second = edge
         ifirst = node_to_idx[first]
         isecond = node_to_idx[second]
-        bond_type = BondType.names[bond_types[first, second]]
+        bond_type = bond_types[first, second]
         mol.AddBond(ifirst, isecond, bond_type)
     Chem.SanitizeMol(mol)
     return mol
