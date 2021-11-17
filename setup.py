@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="decepticons",
+    name="dinobots",
     version="0.0.1",
     author="Keshav Dial",
     author_email="keshav@magarveylab.ca",
