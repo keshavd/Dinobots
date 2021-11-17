@@ -59,7 +59,8 @@ def nx_to_mol(G):
         idx = mol.AddAtom(a)
         node_to_idx[node] = idx
     bond_types = {
-        k: BondType.names[x] for k, x in nx.get_edge_attributes(G, "bond_type").items
+        k: BondType.names[x] for k, x in nx.get_edge_attributes(G,
+                                                                "bond_type").items()
     }
     for edge in G.edges():
         first, second = edge
