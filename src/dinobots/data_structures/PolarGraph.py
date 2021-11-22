@@ -60,6 +60,8 @@ class PolarGraph:
         """
         return self._edges
 
+    # Convert To Data Types
+
     def to_nx(self):
         """Convert to NetworkX Graph Object"""
         import networkx as nx
@@ -97,3 +99,13 @@ class PolarGraph:
 
     def to_pyg(self):
         pass
+
+    # Convert From Data Types
+
+    @staticmethod
+    def from_nx(G):
+        all_edges = G.edges().items()
+        edges_df = pl.DataFrame([{"src": k[0], "dst": k[1], **v} for k, v in all_edges])
+        all_nodes = G.nodes().items()
+        node_df = pl.DataFrame([{"id": k, **v} for k, v in all_nodes])
+        return PolarGraph(v=node_df, e=edges_df)
