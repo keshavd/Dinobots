@@ -1,6 +1,6 @@
 import polars as pl
 import pandas as pd
-
+from collections.abc import Iterable
 
 class PolarGraph:
     """
@@ -106,9 +106,14 @@ class PolarGraph:
     @staticmethod
     def from_nx(G):
         all_edges = G.edges().items()
-        edges_df = pl.DataFrame(
-            pd.DataFrame([{"src": k[0], "dst": k[1], **v} for k, v in all_edges])
-        )
+        edge_dict = {}
+        for k, v in all_edges:
+            edge_dict['src'] = k[0]
+            edge_dict['dst'] = k[1]
+            for vk, vv in v.items():
+                if isinstance(vv, Iterable):
+                    edge_dict[vk] = list(vv)
+        edges_df = pl.DataFrame(edge_dict)
         all_nodes = G.nodes().items()
         node_df = pl.DataFrame(pd.DataFrame([{"id": k, **v} for k, v in all_nodes]))
         return PolarGraph(v=node_df, e=edges_df)
