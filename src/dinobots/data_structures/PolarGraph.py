@@ -119,7 +119,7 @@ class PolarGraph:
         if len(edge_dicts) > 0:
             edges_df = pl.DataFrame(pd.DataFrame(edge_dicts))
         else:
-            edges_df = None
+            edges_df = pl.DataFrame()
         all_nodes = G.nodes().items()
         node_dicts = []
         for k, v in all_nodes:
@@ -132,5 +132,5 @@ class PolarGraph:
         if len(node_dicts) > 0:
             node_df = pl.DataFrame(pd.DataFrame(node_dicts))
         else:
-            node_df = None
+            node_df = pl.DataFrame()
         return PolarGraph(v=node_df, e=edges_df)
