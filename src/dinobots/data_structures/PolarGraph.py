@@ -1,6 +1,5 @@
 import polars as pl
 import pandas as pd
-from collections.abc import Iterable
 
 
 class PolarGraph:
@@ -109,11 +108,9 @@ class PolarGraph:
         all_edges = G.edges().items()
         edge_dicts = []
         for k, v in all_edges:
-            edge_dict = {}
-            edge_dict["src"] = k[0]
-            edge_dict["dst"] = k[1]
+            edge_dict = {"src": k[0], "dst": k[1]}
             for vk, vv in v.items():
-                if isinstance(vv, Iterable):
+                if isinstance(vv, set):  # recast sets
                     edge_dict[vk] = list(vv)
             edge_dicts.append(edge_dict)
         if len(edge_dicts) > 0:
@@ -123,10 +120,9 @@ class PolarGraph:
         all_nodes = G.nodes().items()
         node_dicts = []
         for k, v in all_nodes:
-            node_dict = {}
-            node_dict["id"] = k
+            node_dict = {"id": k}
             for vk, vv in v.items():
-                if isinstance(vv, Iterable):
+                if isinstance(vv, set):
                     node_dict[vk] = list(vv)
             node_dicts.append(node_dict)
         if len(node_dicts) > 0:
