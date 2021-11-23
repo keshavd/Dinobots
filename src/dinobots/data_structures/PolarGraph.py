@@ -112,6 +112,8 @@ class PolarGraph:
             for vk, vv in v.items():
                 if isinstance(vv, set):  # recast sets
                     edge_dict[vk] = list(vv)
+                else:
+                    edge_dict[vk] = vv
             edge_dicts.append(edge_dict)
         if len(edge_dicts) > 0:
             edges_df = pl.DataFrame(pd.DataFrame(edge_dicts))
@@ -124,6 +126,8 @@ class PolarGraph:
             for vk, vv in v.items():
                 if isinstance(vv, set):
                     node_dict[vk] = list(vv)
+                else:
+                    node_dict[vk] = vv
             node_dicts.append(node_dict)
         if len(node_dicts) > 0:
             node_df = pl.DataFrame(pd.DataFrame(node_dicts))
