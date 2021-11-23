@@ -115,7 +115,15 @@ class PolarGraph:
                 if isinstance(vv, Iterable):
                     edge_dict[vk] = list(vv)
             edge_dicts.append(edge_dict)
-        edges_df = pl.DataFrame(edge_dicts)
+        edges_df = pl.DataFrame(pd.DataFrame(edge_dicts))
         all_nodes = G.nodes().items()
-        node_df = pl.DataFrame(pd.DataFrame([{"id": k, **v} for k, v in all_nodes]))
+        node_dicts = []
+        for k, v in all_nodes:
+            node_dict = {}
+            node_dict['id'] = k
+            for vk, vv in v.items():
+                if isinstance(vv, Iterable):
+                    node_dict[vk] = list(vv)
+            node_dicts.append(node_dict)
+        node_df = pl.DataFrame(pd.DataFrame(node_dicts))
         return PolarGraph(v=node_df, e=edges_df)
