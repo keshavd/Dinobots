@@ -2,6 +2,7 @@ import polars as pl
 import pandas as pd
 from collections.abc import Iterable
 
+
 class PolarGraph:
     """
     Represents a graph with vertices and edges stored as DataFrames.
@@ -109,13 +110,13 @@ class PolarGraph:
         edge_dicts = []
         for k, v in all_edges:
             edge_dict = {}
-            edge_dict['src'] = k[0]
-            edge_dict['dst'] = k[1]
+            edge_dict["src"] = k[0]
+            edge_dict["dst"] = k[1]
             for vk, vv in v.items():
                 if isinstance(vv, Iterable):
                     edge_dict[vk] = list(vv)
             edge_dicts.append(edge_dict)
-        if len(edge_dicts) >0:
+        if len(edge_dicts) > 0:
             edges_df = pl.DataFrame(pd.DataFrame(edge_dicts))
         else:
             edges_df = None
@@ -123,12 +124,12 @@ class PolarGraph:
         node_dicts = []
         for k, v in all_nodes:
             node_dict = {}
-            node_dict['id'] = k
+            node_dict["id"] = k
             for vk, vv in v.items():
                 if isinstance(vv, Iterable):
                     node_dict[vk] = list(vv)
             node_dicts.append(node_dict)
-        if len(node_dict) > 0:
+        if len(node_dicts) > 0:
             node_df = pl.DataFrame(pd.DataFrame(node_dicts))
         else:
             node_df = None
