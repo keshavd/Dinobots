@@ -144,7 +144,7 @@ class PolarGraph:
         vertex_lookup = {v: idx for idx, v in enumerate(self.vertices.id)}
         src = self.edges.src.apply(lambda x: vertex_lookup[x]).to_numpy()
         dst = self.edges.dst.apply(lambda x: vertex_lookup[x]).to_numpy()
-        edge_index = np.concatenate([src, dst], axis=0)
+        edge_index = np.concatenate([[src], [dst]], axis=0)
 
         # Edge Attributes
         edge_attr = (
