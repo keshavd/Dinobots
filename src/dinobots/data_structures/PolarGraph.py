@@ -134,11 +134,11 @@ class PolarGraph:
         else:
             pos = None
         return Data(
-            x=torch.tensor(x) if x else None,
-            edge_index=torch.tensor(edge_index) if edge_index else None,
-            edge_attr=torch.tensor(edge_attr) if edge_attr else None,
-            y=torch.tensor(y) if y else None,
-            pos=torch.tensor(pos) if pos else None,
+            x=torch.tensor(x) if x is not None else None,
+            edge_index=torch.tensor(edge_index) if edge_index is not None else None,
+            edge_attr=torch.tensor(edge_attr) if edge_attr is not None else None,
+            y=torch.tensor(y) if y is not None else None,
+            pos=torch.tensor(pos) if pos is not None else None,
         )
 
     # Convert From Data Types
