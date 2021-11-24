@@ -169,13 +169,17 @@ class PolarGraph:
             pos = None
 
         return Data(
-            x=torch.tensor(x) if x is not None else None,
-            edge_index=torch.transpose(torch.tensor(edge_index), 0, 1)
+            x=torch.tensor(x, dtype=torch.float32) if x is not None else None,
+            edge_index=torch.transpose(
+                torch.tensor(edge_index, dtype=torch.float32), 0, 1
+            )
             if edge_index is not None
             else None,
-            edge_attr=torch.tensor(edge_attr) if edge_attr is not None else None,
-            y=torch.tensor(y) if y is not None else None,
-            pos=torch.tensor(pos) if pos is not None else None,
+            edge_attr=torch.tensor(edge_attr, dtype=torch.float32)
+            if edge_attr is not None
+            else None,
+            y=torch.tensor(y, dtype=torch.float32) if y is not None else None,
+            pos=torch.tensor(pos, dtype=torch.float32) if pos is not None else None,
         )
 
     # Convert From Data Types
