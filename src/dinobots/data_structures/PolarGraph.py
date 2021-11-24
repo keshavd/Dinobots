@@ -170,9 +170,7 @@ class PolarGraph:
 
         return Data(
             x=torch.tensor(x, dtype=torch.float32) if x is not None else None,
-            edge_index=torch.transpose(
-                torch.tensor(edge_index, dtype=torch.long), 0, 1
-            )
+            edge_index=torch.tensor(edge_index, dtype=torch.long)
             if edge_index is not None
             else None,
             edge_attr=torch.tensor(edge_attr, dtype=torch.float32)
