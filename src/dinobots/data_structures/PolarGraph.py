@@ -16,10 +16,17 @@ class PolarGraph:
 
     """
 
-    def __init__(self, v: pl.DataFrame, e: pl.DataFrame):
+    def __init__(
+        self, v: pl.DataFrame, e: pl.DataFrame, vertex_encoders=None, edge_encoders=None
+    ):
+        if edge_encoders is None:
+            edge_encoders = []
+        if vertex_encoders is None:
+            vertex_encoders = []
         self._vertices = v
         self._edges = e
-
+        self.vertex_encoders = vertex_encoders
+        self.edge_encoders = edge_encoders
         self.ID = "id"
         self.SRC = "src"
         self.DST = "dst"
@@ -109,6 +116,8 @@ class PolarGraph:
     ):
         from torch_geometric.data import Data
         import torch
+        from sklearn.preprocessing import LabelBinarizer
+        import numpy as np
 
         if vertex_attributes is None:
             vertex_attributes = []
@@ -116,26 +125,53 @@ class PolarGraph:
         if edge_attributes is None:
             edge_attributes = []
 
-        x = self.vertices[["id", *vertex_attributes]].to_numpy()
-        edge_index = self.edges[["src", "dst"]].to_numpy()
+        # Node Attributes
+        x = []
+        for vertex_attribute in vertex_attributes:
+            attr = self.vertices[vertex_attribute].to_numpy()
+            enc = self.vertex_encoders.get(vertex_attribute)
+            if enc is None:
+                enc = LabelBinarizer()
+                self.vertex_encoders[vertex_attribute] = enc
+            encoded_data = enc.fit_transform(attr)
+            x.append(encoded_data)
+        if len(x) > 0:
+            x = np.concatenate(x, axis=0)
+        else:
+            x = None
+
+        # Edges
+        vertex_lookup = {v: idx for idx, v in enumerate(self.vertices.id)}
+        src = self.edges.src.apply(lambda x: vertex_lookup[x]).to_numpy()
+        dst = self.edges.dst.apply(lambda x: vertex_lookup[x]).to_numpy()
+        edge_index = np.concatenate([src, dst], axis=0)
+
+        # Edge Attributes
         edge_attr = (
             self.edges[[*edge_attributes]].to_numpy()
             if len(edge_attributes) > 0
             else None
         )
+
+        # Labels
         if label_nodes and node_label_key is not None:
             y = self.vertices[[node_label_key]].to_numpy()
         elif graph_label is not None:
             y = graph_label
         else:
             y = None
+
+        # Node position matrix
         if node_pos_key:
             pos = self.vertices[[node_pos_key]].to_numpy()
         else:
             pos = None
+
         return Data(
             x=torch.tensor(x) if x is not None else None,
-            edge_index=torch.tensor(edge_index) if edge_index is not None else None,
+            edge_index=torch.transpose(torch.tensor(edge_index), 0, 1)
+            if edge_index is not None
+            else None,
             edge_attr=torch.tensor(edge_attr) if edge_attr is not None else None,
             y=torch.tensor(y) if y is not None else None,
             pos=torch.tensor(pos) if pos is not None else None,
