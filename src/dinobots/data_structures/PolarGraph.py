@@ -133,7 +133,8 @@ class PolarGraph:
             if enc is None:
                 enc = LabelBinarizer()
                 self.vertex_encoders[vertex_attribute] = enc
-            encoded_data = enc.fit_transform(attr)
+                enc.fit(attr)
+            encoded_data = enc.transform(attr)
             x.append(encoded_data)
         if len(x) > 0:
             x = np.concatenate(x, axis=0)
