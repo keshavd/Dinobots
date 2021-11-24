@@ -20,9 +20,9 @@ class PolarGraph:
         self, v: pl.DataFrame, e: pl.DataFrame, vertex_encoders=None, edge_encoders=None
     ):
         if edge_encoders is None:
-            edge_encoders = []
+            edge_encoders = {}
         if vertex_encoders is None:
-            vertex_encoders = []
+            vertex_encoders = {}
         self._vertices = v
         self._edges = e
         self.vertex_encoders = vertex_encoders
