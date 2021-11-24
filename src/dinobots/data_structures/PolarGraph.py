@@ -98,8 +98,48 @@ class PolarGraph:
     def to_cugraph(self):
         pass
 
-    def to_pyg(self):
-        pass
+    def to_pyg(
+        self,
+        vertex_attributes=None,
+        edge_attributes=None,
+        label_nodes=False,
+        node_label_key=None,
+        graph_label=None,
+        node_pos_key=None,
+    ):
+        from torch_geometric.data import Data
+        import torch
+
+        if vertex_attributes is None:
+            vertex_attributes = []
+
+        if edge_attributes is None:
+            edge_attributes = []
+
+        x = self.vertices[["id", *vertex_attributes]].to_numpy()
+        edge_index = self.edges[["src", "dst"]].to_numpy()
+        edge_attr = (
+            self.edges[[*edge_attributes]].to_numpy()
+            if len(edge_attributes) > 0
+            else None
+        )
+        if label_nodes and node_label_key is not None:
+            y = self.vertices[[node_label_key]].to_numpy()
+        elif graph_label is not None:
+            y = graph_label
+        else:
+            y = None
+        if node_pos_key:
+            pos = self.vertices[[node_pos_key]].to_numpy()
+        else:
+            pos = None
+        return Data(
+            x=torch.tensor(x) if x else None,
+            edge_index=torch.tensor(edge_index) if edge_index else None,
+            edge_attr=torch.tensor(edge_attr) if edge_attr else None,
+            y=torch.tensor(y) if y else None,
+            pos=torch.tensor(pos) if pos else None,
+        )
 
     # Convert From Data Types
 
