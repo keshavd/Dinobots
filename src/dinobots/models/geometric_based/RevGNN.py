@@ -5,6 +5,12 @@ from torch_geometric.nn import GroupAddRev, SAGEConv
 
 
 class RevGNN(torch.nn.Module):
+    """
+    As Descirbed in Training Graph Neural Networks with 1000 Layers by Guohao Li, Matthias Müller, Bernard Ghanem, Vladlen Koltun
+
+    https://arxiv.org/abs/2106.07476
+    """
+
     def __init__(
         self,
         in_channels,
