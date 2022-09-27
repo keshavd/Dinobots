@@ -25,7 +25,6 @@ class RevGNN(torch.nn.Module):
         self.dropout = dropout
 
         self.lin1 = Linear(in_channels, hidden_channels)
-        self.lin2 = Linear(hidden_channels, out_channels)
         self.norm = LayerNorm(hidden_channels, elementwise_affine=True)
 
         assert hidden_channels % num_groups == 0
@@ -39,7 +38,6 @@ class RevGNN(torch.nn.Module):
 
     def reset_parameters(self):
         self.lin1.reset_parameters()
-        self.lin2.reset_parameters()
         self.norm.reset_parameters()
         for conv in self.convs:
             conv.reset_parameters()
@@ -58,7 +56,7 @@ class RevGNN(torch.nn.Module):
             x = conv(x, edge_index, mask)
         x = self.norm(x).relu()
         x = F.dropout(x, p=self.dropout, training=self.training)
-        return self.lin2(x)
+        return x
 
 
 class GNNBlock(torch.nn.Module):
