@@ -1,4 +1,4 @@
-from torch.nn import Module
+from torch.nn import Module, BCEWithLogitsLoss, CrossEntropyLoss, MSELoss
 from dinobots.outputs.LinkPredictionOutput import LinkPredictionOutput
 
 
@@ -16,5 +16,6 @@ class LinkPredictionMixin(Module):
         )  # dot product
         output.logits = logits  # Logit per link
         if y is not None:
-            output.loss = self.loss(logits, y)
+            loss_fct = CrossEntropyLoss(ignore_index=self.ignore_index)
+            output.loss = loss_fct(logits.view(-1, self.num_labels), y.view(-1))
         return output

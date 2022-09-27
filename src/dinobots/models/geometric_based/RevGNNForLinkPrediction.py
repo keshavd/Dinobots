@@ -1,9 +1,9 @@
 from torch.nn import Module, Linear
 from dinobots.models.geometric_based.RevGNN import RevGNN
+from dinobots.mixins.LinkPredictionMixin import LinkPredictionMixin
 
 
-
-class RevGNNForLinkPrediction(Module):
+class RevGNNForLinkPrediction(Module, LinkPredictionMixin):
     def __init__(
         self,
         in_channels,
