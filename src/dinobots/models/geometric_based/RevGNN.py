@@ -42,7 +42,7 @@ class RevGNN(Module):
         for conv in self.convs:
             conv.reset_parameters()
 
-    def forward(self, x, edge_index):
+    def forward(self, x, edge_index, **kwargs):
         x = self.lin1(x)
 
         # Generate a dropout mask which will be shared across GNN blocks:
