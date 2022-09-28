@@ -1,10 +1,10 @@
 import torch
 import torch.nn.functional as F
-from torch.nn import LayerNorm, Linear
+from torch.nn import LayerNorm, Linear, Module
 from torch_geometric.nn import GroupAddRev, SAGEConv
 
 
-class RevGNN(torch.nn.Module):
+class RevGNN(Module):
     """
     As Descirbed in Training Graph Neural Networks with 1000 Layers by Guohao Li, Matthias Müller, Bernard Ghanem, Vladlen Koltun
 

@@ -3,8 +3,6 @@ from dinobots.outputs.LinkPredictionOutput import LinkPredictionOutput
 
 
 class LinkPredictionMixin(Module):
-    def __init__(self, **kwargs):
-        super().__init__()
 
     def forward(self, x, edge_index, y=None, **kwargs):
         x = self.model(x, edge_index, **kwargs)
