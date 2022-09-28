@@ -13,6 +13,7 @@ class RevGNNForLinkPrediction(LinkPredictionMixin, Module):
         dropout,
         num_groups=2,
         ignore_index=None,
+        num_labels=2,
     ):
         super().__init__()
         self.in_channels = in_channels
@@ -31,6 +32,7 @@ class RevGNNForLinkPrediction(LinkPredictionMixin, Module):
         )
         self.classification_head = Linear(hidden_channels, out_channels)
         self.ignore_index = ignore_index
+        self.num_labels = num_labels
 
     def reset_parameters(self):
         self.model.reset_parameters()
