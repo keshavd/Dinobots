@@ -1,9 +1,9 @@
-from torch.nn import Module, BCEWithLogitsLoss, CrossEntropyLoss, MSELoss
+from torch.nn import Module
+import torch.nn.functional as F
 from dinobots.outputs.LinkPredictionOutput import LinkPredictionOutput
 
 
 class LinkPredictionMixin(Module):
-
     def forward(self, x, edge_index, y=None, **kwargs):
         x = self.model(x, edge_index, **kwargs)
         node_embeddings = self.classification_head(x)
@@ -15,6 +15,5 @@ class LinkPredictionMixin(Module):
         logits = (node_embeddings[A] * node_embeddings[B]).sum(-1)
         output.logits = logits  # Logit per edge
         if y is not None:
-            loss_fct = CrossEntropyLoss(ignore_index=self.ignore_index)
-            output.loss = loss_fct(logits.view(-1, self.num_labels), y.view(-1))
+            output.loss = F.binary_cross_entropy_with_logits(logits, y.float())
         return output
